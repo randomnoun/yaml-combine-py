@@ -143,15 +143,15 @@ setup(
     },
     # If there are data files included in your packages that need to be
     # installed, specify them here.
-    #package_data={  # Optional
+    # package_data={  # Optional
     #    "sample": ["package_data.dat"],
-    #},
+    # },
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:
     # http://docs.python.org/distutils/setupscript.html#installing-additional-files
     #
     # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
-    #data_files=[("my_data", ["data/data_file"])],  # Optional
+    # data_files=[("my_data", ["data/data_file"])],  # Optional
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # `pip` to create the appropriate form of executable for the target
@@ -175,8 +175,8 @@ setup(
     # what's used to render the link text on PyPI.
     project_urls={  # Optional
         "Bug Reports": "https://github.com/randomnoun/swagger-combine-py/issues",
-        #"Funding": "https://donate.pypi.org",
-        #"Say Thanks!": "http://saythanks.io/to/example",
+        # "Funding": "https://donate.pypi.org",
+        # "Say Thanks!": "http://saythanks.io/to/example",
         "Source": "https://github.com/randomnoun/swagger-combine-py/",
     },
 )
