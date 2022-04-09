@@ -1,0 +1,46 @@
+---
+paths:
+  /thing:
+    get:
+      description: get all the things
+      operationId: getThings
+      parameters: null
+      responses:
+        200: null
+        schema:
+          properties:
+            status:
+              description: OK
+              type: string
+            thing:
+              items:
+                $ref: objects.yaml#/definitions/ThingObject
+              type: array
+          title: getThingsOKResponse
+          type: object
+    post:
+      description: |
+        Adds a new `Thing`.
+        * Things must be uniquely identifiable by `name`.
+        * The `id` of the thing must be empty; the newly created `id` will be returned in the response object.
+      operationId: addThing
+      parameters:
+        new-parameter:
+          description: the new parameter in v2 of the API that isn't in v1
+        old-parameter:
+          description: some old parameter whose definition has changed
+        thing:
+          $ref: objects.yaml#/definitions/ThingObject
+      responses:
+        200: null
+        schema:
+          properties:
+            status:
+              description: OK
+              type: string
+            thing:
+              items:
+                $ref: objects.yaml#/definitions/ThingObject
+              type: array
+          title: getThingsOKResponse
+          type: object

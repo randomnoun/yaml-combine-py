@@ -20,6 +20,10 @@ class SwaggerCombiner:
     """YAML file cache"""
 
     def __init__(self):
+        self._yaml_files = {}
+        self._files = []
+        self._verbose = False
+        self._relative_dir = "."
         pass
 
     def set_relative_dir(self, relative_dir):
@@ -71,7 +75,7 @@ class SwaggerCombiner:
         clone_list = list(obj.keys())
         for k in clone_list:
             v = obj[k]
-            mv = merged_obj[k]
+            mv = merged_obj.get(k)
             if mv is None:
                 # simple merge
                 merged_obj[k] = v
@@ -164,11 +168,11 @@ class SwaggerCombiner:
                 else:
                     # escape this jsonpath-ly
                     if ch == "/":
-                        result.append("~1")
+                        result = result + "~1"
                     elif ch == "~":
-                        result.append("~0")
+                        result = result + "~0"
                     else:
-                        result.append(ch)
+                        result = result + ch
             ref = f + "#" + result
 
             # as per ResolverCache
@@ -201,7 +205,7 @@ class SwaggerCombiner:
                     try:
                         node = node[self._unescape_pointer(json_path_element)]
                     except:
-                        raise "Could not descend into " + json_path_element + " of " + definition_path + " in contents of " + file
+                        raise ValueError("Could not descend into " + json_path_element + " of " + definition_path + " in contents of " + file)
                     if node is None:
                         raise "Could not find '" + definition_path + "' in contents of " + file
                 return node
