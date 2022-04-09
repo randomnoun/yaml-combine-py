@@ -9,7 +9,7 @@ import logging
 from difflib import Differ
 from pprint import pprint
 
-from swagger_combine.swagger_combiner import SwaggerCombiner
+from randomnoun.swagger_combine.swagger_combiner import SwaggerCombiner
 
 
 class TestSwaggerCombine(unittest.TestCase):
