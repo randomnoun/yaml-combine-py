@@ -1,6 +1,7 @@
 import yaml
 import os
 
+
 class SwaggerCombiner:
     """Swagger combiner class"""
 
@@ -11,13 +12,13 @@ class SwaggerCombiner:
 
     def __init__(self):
         pass
-    
+
     def set_relative_dir(self, relative_dir):
         self._relative_dir = relative_dir
-    
+
     def set_files(self, files):
         self._files = files
-        
+
     def combine(self, output_stream):
         self._files.sort()
         merged_obj = None
@@ -29,21 +30,16 @@ class SwaggerCombiner:
                     if merged_obj is None:
                         merged_obj = obj
                     else:
-                        self._merge(merged_obj, obj, f, "");
+                        self._merge(merged_obj, obj, f, "")
                 except yaml.YAMLError as exc:
                     print(exc)
-                    
-        # Write YAML file
-        #with io.open('data.yaml', 'w', encoding='utf8') as outfile:
-        yaml.dump(merged_obj, output_stream, default_flow_style=False, allow_unicode=True)
 
+        # Write YAML file
+        # with io.open('data.yaml', 'w', encoding='utf8') as outfile:
+        yaml.dump(
+            merged_obj, output_stream, default_flow_style=False, allow_unicode=True
+        )
 
     def _merge(self, merged_obj, obj, f, prefix):
         print("not implemented")
-        
-        
-    def f(self):
-        return 'hello world'
 
-def add_one(number):
-    return number + 1
