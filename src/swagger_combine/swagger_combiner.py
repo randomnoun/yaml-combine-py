@@ -49,18 +49,17 @@ class SwaggerCombiner:
         self._replace_refs(merged_obj, self._relative_dir, "")
 
         # formatting improvements as per https://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data
-        def str_presenter(dumper, data):
+        def str_representer(dumper, data):
             if len(data.splitlines()) > 1:  # check for multiline string
                 return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
             return dumper.represent_scalar("tag:yaml.org,2002:str", data)
 
-        yaml.add_representer(str, str_presenter)
+        yaml.add_representer(str, str_representer)
 
         # yaml.dump() doesn't include the directives separator; include it for compatibility with the java swagger-combine output
         output_stream.write("---\n")
 
-        # For Python 3.7+, dicts preserve insertion order. Since PyYAML 5.1.x
-        # you can disable the sorting of keys (#254). Unfortunately, the sorting keys behaviour does still default to True.
+        # For Python 3.7+, dicts preserve insertion order. 
         # so let's sort in py 3.6, and not sort in py 3.7
         is_py37 = sys.version_info >= (3, 7, 0)
         yaml.dump(
