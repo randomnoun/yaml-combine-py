@@ -1,4 +1,4 @@
-# swagger-combine module
+# yaml-combine module
 
 # def main():
 #    """Entry point for the application script"""
