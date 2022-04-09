@@ -14,7 +14,6 @@ from swagger_combine.swagger_combiner import SwaggerCombiner
 
 class TestSwaggerCombine(unittest.TestCase):
     def test_combine(self):
-
         logging.basicConfig(level=logging.DEBUG)
         files = ["input.yaml"]
 
@@ -28,7 +27,7 @@ class TestSwaggerCombine(unittest.TestCase):
         result = output.getvalue()
         output.close()
 
-        is_py37 = sys.version_info >= (3,7,0)
+        is_py37 = sys.version_info >= (3, 7, 0)
         filename = "tests/data/t1/expected-output.yaml" if is_py37 else "tests/data/t1/expected-output-sorted.yaml" 
         f = open(filename, "r", encoding="utf-8")
         expected_output = f.read()
@@ -36,9 +35,11 @@ class TestSwaggerCombine(unittest.TestCase):
         self.nicer_assertEqual(result, expected_output)
 
     def nicer_assertEqual(self, result, expected_output):
+        """An assertEqual method which produces a nicer diff output"""
+
         if (result==expected_output):
-            return # OK
-        
+            return  # OK
+
         print("\n=============\n")
         print("result is\n" + result)
 
