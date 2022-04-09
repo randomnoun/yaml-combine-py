@@ -29,7 +29,7 @@ setup(
     # There are some restrictions on what makes a valid project name
     # specification here:
     # https://packaging.python.org/specifications/core-metadata/#name
-    name="swagger-combine",  # Required
+    name="yaml-combine",  # Required
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
     #
@@ -65,7 +65,7 @@ setup(
     #
     # This field corresponds to the "Home-Page" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#home-page-optional
-    url="https://github.com/randomnoun/swagger-combine-py",  # Optional
+    url="https://github.com/randomnoun/yaml-combine-py",  # Optional
     # This should be your name or the name of the organization which owns the
     # project.
     author="Greg Knox",  # Optional
@@ -162,7 +162,7 @@ setup(
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
         "console_scripts": [
-            "swagger-combine=randomnoun.swagger_combine:main",
+            "yaml-combine=randomnoun.yaml_combine:main",
         ],
     },
     # List additional URLs that are relevant to your project as a dict.
@@ -175,9 +175,9 @@ setup(
     # maintainers, and where to support the project financially. The key is
     # what's used to render the link text on PyPI.
     project_urls={  # Optional
-        "Bug Reports": "https://github.com/randomnoun/swagger-combine-py/issues",
+        "Bug Reports": "https://github.com/randomnoun/yaml-combine-py/issues",
         # "Funding": "https://donate.pypi.org",
         # "Say Thanks!": "http://saythanks.io/to/example",
-        "Source": "https://github.com/randomnoun/swagger-combine-py/",
+        "Source": "https://github.com/randomnoun/yaml-combine-py/",
     },
 )

@@ -5,8 +5,8 @@ import sys
 from urllib.parse import unquote
 
 
-class SwaggerCombiner:
-    """Swagger combiner class"""
+class YamlCombiner:
+    """Yaml combiner class"""
 
     _relative_dir = "."
 
@@ -61,7 +61,7 @@ class SwaggerCombiner:
         yaml.add_representer(str, str_representer)
 
         # yaml.dump() doesn't include the directives separator
-        # include it for compatibility with the java swagger-combine output
+        # include it for compatibility with the java yaml-combine output
         output_stream.write("---\n")
 
         # For Python 3.7+, dicts preserve insertion order.

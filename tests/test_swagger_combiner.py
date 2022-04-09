@@ -9,15 +9,15 @@ import logging
 from difflib import Differ
 from pprint import pprint
 
-from randomnoun.swagger_combine.swagger_combiner import SwaggerCombiner
+from randomnoun.yaml_combine.yaml_combiner import YamlCombiner
 
 
-class TestSwaggerCombine(unittest.TestCase):
+class TestYamlCombine(unittest.TestCase):
 
     def test_combine_1(self):
         logging.basicConfig(level=logging.DEBUG)
 
-        sc = SwaggerCombiner()
+        sc = YamlCombiner()
         sc.set_verbose(False)
         sc.set_relative_dir("tests/data/t1/")
         sc.set_files(["input.yaml"])
@@ -37,7 +37,7 @@ class TestSwaggerCombine(unittest.TestCase):
     def test_combine_2(self):
         logging.basicConfig(level=logging.DEBUG)
 
-        sc = SwaggerCombiner()
+        sc = YamlCombiner()
         sc.set_verbose(False)
         sc.set_relative_dir("tests/data/t2/")
         sc.set_files(["input.yaml"])
@@ -57,7 +57,7 @@ class TestSwaggerCombine(unittest.TestCase):
     def test_combine_3(self):
         logging.basicConfig(level=logging.DEBUG)
 
-        sc = SwaggerCombiner()
+        sc = YamlCombiner()
         sc.set_verbose(False)
         sc.set_relative_dir("tests/data/t3/")
         sc.set_files(["input.yaml"])

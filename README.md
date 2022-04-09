@@ -1,14 +1,11 @@
-# swagger-combine-py
+# yaml-combine-py
 
 ![Python Logo](https://www.python.org/static/community_logos/python-logo.png "Sample inline image")
 
-A python version of the [swagger-combine-maven-plugin][swagger-combine-maven-plugin]
+A YAML pre-processor to combine one or more YAML files with `$xref` references.
 
-This is the README file for the project.
+This project is compatible with the merging algorithm used in [swagger-combine-maven-plugin][swagger-combine-maven-plugin].
 
-Typical contents for this file would include an overview of the project, basic
-usage examples, etc. Generally, including the project changelog in here is not a
-good idea, although a simple “What's New” section for the most recent version
-may be appropriate.
+See that project for a description of `$xref` references and examples.
 
-[swagger-combine-maven-plugin]: https://randomnoun.github.io/swagger-combine-maven-plugin/
+[swagger-combine-maven-plugin]: https://randomnoun.github.io/yaml-combine-maven-plugin/
