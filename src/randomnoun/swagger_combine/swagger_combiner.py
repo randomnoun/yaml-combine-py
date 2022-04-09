@@ -72,7 +72,6 @@ class SwaggerCombiner:
         )
 
     def _merge(self, merged_obj, obj, f, prefix):
-        # print("not implemented")
         clone_list = list(obj.keys())
         for k in clone_list:
             v = obj[k]
@@ -220,8 +219,7 @@ class SwaggerCombiner:
         # hopefully this is the python equivalent of URLDecoder.decode()
         json_path_element = unquote(json_path_element)
         # Unescape the JSON Pointer segment using the algorithm described in RFC 6901,
-        # section 4:
-        # https://tools.ietf.org/html/rfc6901#section-4
+        # section 4: https://tools.ietf.org/html/rfc6901#section-4
         # First transform any occurrence of the sequence '~1' to '/'
         json_path_element = json_path_element.replace("~1", "/")
         # Then transforming any occurrence of the sequence '~0' to '~'.
