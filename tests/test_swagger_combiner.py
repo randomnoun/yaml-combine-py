@@ -28,7 +28,7 @@ class TestSwaggerCombine(unittest.TestCase):
         output.close()
 
         is_py37 = sys.version_info >= (3, 7, 0)
-        filename = "tests/data/t1/expected-output.yaml" if is_py37 else "tests/data/t1/expected-output-sorted.yaml" 
+        filename = "tests/data/t1/expected-output.yaml" if is_py37 else "tests/data/t1/expected-output-sorted.yaml"
         f = open(filename, "r", encoding="utf-8")
         expected_output = f.read()
         f.close()
@@ -48,7 +48,7 @@ class TestSwaggerCombine(unittest.TestCase):
         output.close()
 
         is_py37 = sys.version_info >= (3, 7, 0)
-        filename = "tests/data/t2/expected-output.yaml" if is_py37 else "tests/data/t2/expected-output-sorted.yaml" 
+        filename = "tests/data/t2/expected-output.yaml" if is_py37 else "tests/data/t2/expected-output-sorted.yaml"
         f = open(filename, "r", encoding="utf-8")
         expected_output = f.read()
         f.close()
@@ -68,17 +68,16 @@ class TestSwaggerCombine(unittest.TestCase):
         output.close()
 
         is_py37 = sys.version_info >= (3, 7, 0)
-        filename = "tests/data/t3/expected-output.yaml" if is_py37 else "tests/data/t3/expected-output-sorted.yaml" 
+        filename = "tests/data/t3/expected-output.yaml" if is_py37 else "tests/data/t3/expected-output-sorted.yaml"
         f = open(filename, "r", encoding="utf-8")
         expected_output = f.read()
         f.close()
         self.nicer_assertEqual(result, expected_output)
 
-
     def nicer_assertEqual(self, result, expected_output):
         """An assertEqual method which produces a nicer diff output"""
 
-        if (result==expected_output):
+        if (result == expected_output):
             return  # OK
 
         print("\n=============\n")

@@ -6,7 +6,7 @@ https://github.com/randomnoun/swagger-combine-maven-plugin
 """
 
 # Always prefer setuptools over distutils
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 import pathlib
 
 here = pathlib.Path(__file__).parent.resolve()
@@ -40,7 +40,7 @@ setup(
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
-    description="A YAML pre-processor which can be used to combine one or more YAML files before swagger code generation.",  # Optional
+    description="A YAML pre-processor to combine one or more YAML files before swagger code generation.",
     # This is an optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
     #
@@ -116,7 +116,8 @@ setup(
     #
     #   py_modules=["my_module"],
     #
-    packages=find_packages(where="src"),  # Required
+    packages=find_namespace_packages(where="src"),  # Required
+    namespace_packages=["randomnoun"],
     # Specify which Python versions you support. In contrast to the
     # 'Programming Language' classifiers above, 'pip install' will check this
     # and refuse to install the project if the version does not match. See

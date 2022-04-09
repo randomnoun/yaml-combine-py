@@ -2,7 +2,6 @@ import yaml
 import os
 import logging
 import sys
-from certifi.core import contents
 from urllib.parse import unquote
 
 
@@ -52,7 +51,8 @@ class SwaggerCombiner:
 
         self._replace_refs(merged_obj, self._relative_dir, "")
 
-        # formatting improvements as per https://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data
+        # formatting improvements as per
+        # https://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data
         def str_representer(dumper, data):
             if len(data.splitlines()) > 1:  # check for multiline string
                 return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
@@ -60,10 +60,11 @@ class SwaggerCombiner:
 
         yaml.add_representer(str, str_representer)
 
-        # yaml.dump() doesn't include the directives separator; include it for compatibility with the java swagger-combine output
+        # yaml.dump() doesn't include the directives separator
+        # include it for compatibility with the java swagger-combine output
         output_stream.write("---\n")
 
-        # For Python 3.7+, dicts preserve insertion order. 
+        # For Python 3.7+, dicts preserve insertion order.
         # so let's sort in py 3.6, and not sort in py 3.7
         is_py37 = sys.version_info >= (3, 7, 0)
         yaml.dump(
@@ -89,7 +90,8 @@ class SwaggerCombiner:
                 # replace if the types are the same
                 merged_obj[k] = v
             else:
-                raise("Could not merge " + f + "#" + prefix + str(k) + " (" + str(type(v)) + ") into merged object " + str(type(mv)))
+                raise ValueError("Could not merge " + f + "#" + prefix + str(k) +
+                      " (" + str(type(v)) + ") into merged object " + str(type(mv)))
 
     def _replace_refs(self, obj, relative_dir, space_prefix):
         result = None
@@ -124,14 +126,16 @@ class SwaggerCombiner:
                             # replace existing key/value pairs
                             r[k] = v
                     else:
-                        raise "Could not override " + str(k) + " (" + str(type(v)) + ") from xref '" + xref + "' " + str(type(result))
+                        raise ValueError("Could not override " + str(k) +
+                                         " (" + str(type(v)) + ") from xref '" + xref + "' " +
+                                         str(type(result)))
         else:
             # descend into obj
             clone_list = list(obj.keys())
             for k in clone_list:
                 v = obj[k]
                 if k == "$xref":
-                    raise "$xref found in dictionary that didn't contain $xref"
+                    raise ValueError("$xref found in dictionary that didn't contain $xref")
                 elif self._verbose:
                     logging.info(space_prefix + str(k))
                 if isinstance(v, dict):
@@ -154,7 +158,7 @@ class SwaggerCombiner:
         if pos == -1:
             # local refs still start with a '#'
             # $ref: '#/paths/~1blogs~1{blog_id}~1new~0posts'
-            raise "Unparseable $xref '" + str(ref) + "'"
+            raise ValueError("Unparseable $xref '" + str(ref) + "'")
         else:
             f = ref[0:pos]
             p = ref[pos + 1 :]
@@ -190,11 +194,11 @@ class SwaggerCombiner:
                     try:
                         contents = yaml.safe_load(stream)
                     except yaml.YAMLError as exc:
-                        raise "Invalid YAML file '" + relative_f + "'" from exc
+                        raise ValueError("Invalid YAML file '" + relative_f + "'") from exc
                 self._yaml_files[file] = contents
 
             if self._verbose:
-                logging.info("definitionPath '" + definition_path + "' in '" + file + "'");
+                logging.info("definitionPath '" + definition_path + "' in '" + file + "'")
 
             if definition_path is None:
                 return contents
@@ -204,10 +208,11 @@ class SwaggerCombiner:
                 for json_path_element in json_path_elements:
                     try:
                         node = node[self._unescape_pointer(json_path_element)]
-                    except:
-                        raise ValueError("Could not descend into " + json_path_element + " of " + definition_path + " in contents of " + file)
+                    except BaseException:
+                        raise ValueError("Could not descend into " + json_path_element +
+                                         " of " + definition_path + " in contents of " + file)
                     if node is None:
-                        raise "Could not find '" + definition_path + "' in contents of " + file
+                        raise ValueError("Could not find '" + definition_path + "' in contents of " + file)
                 return node
 
     def _unescape_pointer(self, json_path_element):
