@@ -8,4 +8,4 @@ This project is compatible with the merging algorithm used in [swagger-combine-m
 
 See that project for a description of `$xref` references and examples.
 
-[swagger-combine-maven-plugin]: https://randomnoun.github.io/yaml-combine-maven-plugin/
+[swagger-combine-maven-plugin]: https://randomnoun.github.io/swagger-combine-maven-plugin/

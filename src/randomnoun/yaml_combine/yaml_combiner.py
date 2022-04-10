@@ -8,22 +8,20 @@ from urllib.parse import unquote
 class YamlCombiner:
     """Yaml combiner class"""
 
-    _relative_dir = "."
-
-    _verbose = False
-
-    _files = []
-    """list(str): list of filenames to combine"""
-
-    _yaml_files = {}
-    """YAML file cache"""
-
     def __init__(self):
-        self._yaml_files = {}
         self._files = []
+        """
+        list(str): list of filenames to combine
+        """
+
+        self._yaml_files = {}
+        """
+        dict: YAML file cache ( filename -> contents )
+        """
+
         self._verbose = False
+
         self._relative_dir = "."
-        pass
 
     def set_relative_dir(self, relative_dir):
         self._relative_dir = relative_dir
