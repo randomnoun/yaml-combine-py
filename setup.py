@@ -15,13 +15,13 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="yaml-combine",
-    version="0.1.0",
+    version="0.2.0",
     description="A YAML pre-processor to combine one or more YAML files with $xref references.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/randomnoun/yaml-combine-py",
     author="Greg Knox",
-    author_email="knoxg@randomnoun.com",
+    author_email="knoxg+pypi@randomnoun.com",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
