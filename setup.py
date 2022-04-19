@@ -15,7 +15,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="yaml-combine",
-    version="0.2.0",
+    version="0.3.0",
     description="A YAML pre-processor to combine one or more YAML files with $xref references.",
     long_description=long_description,
     long_description_content_type="text/markdown",
