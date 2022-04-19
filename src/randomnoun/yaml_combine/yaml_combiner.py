@@ -140,6 +140,10 @@ class YamlCombiner:
                     clone = v.copy()
                     new_object = self._replace_refs(clone, relative_dir, space_prefix + "  ")
                     obj[k] = new_object
+                elif isinstance(v, list):
+                    for i in range(len(v)):
+                        new_object = self._replace_refs(v[i], relative_dir, space_prefix + "  [" + str(i) + "]")
+                        v[i] = new_object
             result = obj
 
         return result
