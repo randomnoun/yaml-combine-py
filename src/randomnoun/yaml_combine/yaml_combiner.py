@@ -50,7 +50,7 @@ class YamlCombiner:
                 except yaml.YAMLError as exc:
                     print(exc)
 
-        merged_obj = self._replace_refs_altern(merged_obj, self._relative_dir, "")
+        merged_obj = self._replace_refs(merged_obj, self._relative_dir, "")
 
         # formatting improvements as per
         # https://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data
@@ -93,7 +93,7 @@ class YamlCombiner:
                 raise ValueError("Could not merge " + f + "#" + prefix + str(k) +
                       " (" + str(type(v)) + ") into merged object " + str(type(mv)))
 
-    def _replace_refs_altern(self, obj, relative_dir, space_prefix):
+    def _replace_refs(self, obj, relative_dir, space_prefix):
         """
         Returns a copy of ``obj``, with every $xref "resolved" at every level of the object tree.
 
@@ -157,7 +157,7 @@ class YamlCombiner:
                     if v in self._xref_stack:
                         raise ValueError(f"$xref cycle detected: {' -> '.join(self._xref_stack + [v])}")
                     self._xref_stack.append(v)
-                    result = self._replace_refs_altern(self._get_xref(relative_dir, v), relative_dir, space_prefix)
+                    result = self._replace_refs(self._get_xref(relative_dir, v), relative_dir, space_prefix)
                     self._xref_stack.pop()
 
                     if len(obj) == 1:
@@ -170,77 +170,19 @@ class YamlCombiner:
                         raise ValueError(f"Inconsistent $xref types within object:\n\n {obj}")
 
                 else:
-                    result = self._replace_refs_altern(v, relative_dir, space_prefix)
+                    result = self._replace_refs(v, relative_dir, space_prefix)
                     # result is added to the object.
                     new_obj[k] = result
 
         elif isinstance(obj, list):
             # Case 2: Array; loop through and resolve each element.
-            new_obj = [self._replace_refs_altern(e, relative_dir, space_prefix) for e in obj]
+            new_obj = [self._replace_refs(e, relative_dir, space_prefix) for e in obj]
 
         else:
             # Case 3: Constant; return a copy.
             new_obj = copy.copy(obj)
 
         return new_obj
-
-    def _replace_refs(self, obj, relative_dir, space_prefix):
-        result = None
-        if "$xref" in obj:
-            xref = obj["$xref"]
-            if self._verbose:
-                logging.info(space_prefix + "$xref to " + xref)
-            result = self._get_xref(relative_dir, xref)
-            if isinstance(result, dict):
-                # shallow clone, but _replace_refs will perform shallow clones at deeper levels
-                result = result.copy()
-                result = self._replace_refs(result, relative_dir, space_prefix + "  ")
-            for k in obj.keys():
-                v = obj[k]
-                if k == "$xref":
-                    # ignore
-                    pass
-                else:
-                    if self._verbose:
-                        logging.info(space_prefix + str(k))
-                    if isinstance(result, dict):
-                        r = result
-                        if k not in r:
-                            # add new property to xref'ed dictionary
-                            r[k] = v
-                        elif isinstance(r[k], dict) and isinstance(v, dict):
-                            # the xref'ed object is a dictionary containing a dictionary
-                            # don't think this is ever going to happen. but maybe it will
-                            rv = r[k]
-                            self._merge(rv, v, "", str(k) + "/")
-                        else:
-                            # replace existing key/value pairs
-                            r[k] = v
-                    else:
-                        raise ValueError("Could not override " + str(k) +
-                                         " (" + str(type(v)) + ") from xref '" + xref + "' " +
-                                         str(type(result)))
-        else:
-            # descend into obj
-            clone_list = list(obj.keys())
-            for k in clone_list:
-                v = obj[k]
-                if k == "$xref":
-                    raise ValueError("$xref found in dictionary that didn't contain $xref")
-                elif self._verbose:
-                    logging.info(space_prefix + str(k))
-                if isinstance(v, dict):
-                    # shallow clone, but _replace_refs will perform shallow clones at deeper levels
-                    clone = v.copy()
-                    new_object = self._replace_refs(clone, relative_dir, space_prefix + "  ")
-                    obj[k] = new_object
-                elif isinstance(v, list):
-                    for i in range(len(v)):
-                        new_object = self._replace_refs(v[i], relative_dir, space_prefix + "  [" + str(i) + "]")
-                        v[i] = new_object
-            result = obj
-
-        return result
 
     def _get_xref(self, relative_dir, ref):
         # myproject-v1-object.yaml#/definitions/InvalidResponse       existing
