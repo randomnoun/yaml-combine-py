@@ -1,0 +1,7 @@
+Object:
+  a: 1
+  b: 2
+  c: 3
+  z:
+    $xref: 'stuff_2.yaml#/Object/d'
+  $xref: 'stuff_2.yaml#/Object'

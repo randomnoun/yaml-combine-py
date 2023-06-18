@@ -1,0 +1,6 @@
+a:
+  $xref: "constant.yaml#/Constant"
+b:
+  $xref: "array.yaml#/Array"
+c:
+  $xref: "object.yaml#/Object"

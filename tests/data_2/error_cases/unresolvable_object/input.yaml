@@ -1,0 +1,6 @@
+a: 1
+b: 2
+c: 3
+$xref: "constant.yaml#/Constant"
+d: 4
+e: 5

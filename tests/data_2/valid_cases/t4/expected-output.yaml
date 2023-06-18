@@ -1,0 +1,20 @@
+---
+paths:
+  /thing:
+    get:
+      operationId: getThings
+      description: get all the things
+      parameters: null
+      responses:
+        200: null
+        schema:
+          type: object
+          title: getThingsOKResponse
+          properties:
+            status:
+              description: OK
+              type: string
+            thing:
+              type: array
+              items:
+                $ref: objects.yaml#/definitions/ThingObject

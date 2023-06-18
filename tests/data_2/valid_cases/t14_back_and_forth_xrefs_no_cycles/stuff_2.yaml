@@ -1,0 +1,3 @@
+Object:
+  d: 4
+  $xref: 'stuff_3.yaml#/Object'

@@ -3,6 +3,7 @@ import os
 import logging
 import sys
 from urllib.parse import unquote
+import copy
 
 
 class YamlCombiner:
@@ -22,6 +23,8 @@ class YamlCombiner:
         self._verbose = False
 
         self._relative_dir = "."
+
+        self._xref_stack = []
 
     def set_relative_dir(self, relative_dir):
         self._relative_dir = relative_dir
@@ -47,7 +50,7 @@ class YamlCombiner:
                 except yaml.YAMLError as exc:
                     print(exc)
 
-        self._replace_refs(merged_obj, self._relative_dir, "")
+        merged_obj = self._replace_refs_altern(merged_obj, self._relative_dir, "")
 
         # formatting improvements as per
         # https://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data
@@ -89,6 +92,97 @@ class YamlCombiner:
             else:
                 raise ValueError("Could not merge " + f + "#" + prefix + str(k) +
                       " (" + str(type(v)) + ") into merged object " + str(type(mv)))
+
+    def _replace_refs_altern(self, obj, relative_dir, space_prefix):
+        """
+        Returns a copy of ``obj``, with every $xref "resolved" at every level of the object tree.
+
+        Assuming #Ref points to some structure called "result" then $xrefs are resolved as follows:
+
+            The single item object {$xref: #Ref} always resolves to result.
+            E.g., if #Ref points to the array [1, 2, 3] the {$xref: #Ref} resolves to [1, 2, 3].
+
+            When result is an object (dictionary), the multiple item object
+            {
+                **previous_key_value_pairs
+                $xref: #Ref
+                **subsequent_keys_value_pairs
+            }
+            resolves to previous_key_value_pairs | result | subsequent_keys_value_pairs where the | operator is the
+            Python dictionary update operator. I.e., the key/value pairs in result override the previous key/value
+            pairs, and are overridden by subsequent key/value pairs.
+            E.g., if #Ref points to the object {b: 7, c: 8, d: 9} then
+            {
+                a: 1
+                b: 2
+                $xref: #Ref
+                d: 4
+            }
+            resolves to
+            {
+                a: 1  # a is retained from the previous key/value pairs
+                b: 7  # b is overridden by the resolved $xref
+                c: 8  # c is added from the resolved $xref
+                d: 4  # d was added by the resolved $xref, but overridden in the subsequent key/value pairs
+            }
+
+            When result is not an object, the multiple item object
+            {
+                **previous_key_value_pairs
+                $xref: #Ref
+                **subsequent_keys_value_pairs
+            }
+            cannot resolve, so a ValueError is raised.
+            E.g., if #Ref points to the array [1, 2, 3] then
+            {
+                a: 1
+                b: 2
+                $xref: #Ref
+                d: 4
+            }
+            cannot resolve (you can't update an object with an array), so a ValueError is raised.
+
+            In all cases, any $xrefs found in result are resolved recursively.
+
+        Note: This method does not modify ``obj``.
+        """
+
+        if isinstance(obj, dict):
+            # Case 1: Object; we will replace, merge, or add any resolved xrefs.
+            new_obj = dict()
+
+            for k, v in obj.items():
+                if k == "$xref":
+
+                    if v in self._xref_stack:
+                        raise ValueError(f"$xref cycle detected: {' -> '.join(self._xref_stack + [v])}")
+                    self._xref_stack.append(v)
+                    result = self._replace_refs_altern(self._get_xref(relative_dir, v), relative_dir, space_prefix)
+                    self._xref_stack.pop()
+
+                    if len(obj) == 1:
+                        # result replaces the entire one-item object.
+                        new_obj = result
+                    elif isinstance(result, dict):
+                        # result merges into the object.
+                        new_obj |= result
+                    else:
+                        raise ValueError(f"Inconsistent $xref types within object:\n\n {obj}")
+
+                else:
+                    result = self._replace_refs_altern(v, relative_dir, space_prefix)
+                    # result is added to the object.
+                    new_obj[k] = result
+
+        elif isinstance(obj, list):
+            # Case 2: Array; loop through and resolve each element.
+            new_obj = [self._replace_refs_altern(e, relative_dir, space_prefix) for e in obj]
+
+        else:
+            # Case 3: Constant; return a copy.
+            new_obj = copy.copy(obj)
+
+        return new_obj
 
     def _replace_refs(self, obj, relative_dir, space_prefix):
         result = None

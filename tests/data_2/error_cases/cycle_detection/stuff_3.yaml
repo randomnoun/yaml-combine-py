@@ -1,0 +1,4 @@
+Object:
+  e: 5
+  bar:
+    $xref: 'stuff_1.yaml#/Object'  # this line is the only difference between valid_cases/back_and_forth_xrefs_no_cycles

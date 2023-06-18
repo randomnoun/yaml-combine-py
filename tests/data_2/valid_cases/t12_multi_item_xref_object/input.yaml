@@ -1,0 +1,5 @@
+x: 24  # not affected by the xref
+a: 0  # will be overridden by the xref
+$xref: "object.yaml#/Object"
+c: 4  # overrides a key from the xref
+y: 25  # adding new keys after the xref is fine too

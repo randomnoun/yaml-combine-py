@@ -1,0 +1,25 @@
+TopObject:
+
+  prev_key: 123
+  a1: [1, 2, 3, 4, $xref: 'constant.yaml#/Constant']
+  a: [1, 2, 3, 4, $xref: 'constant.yaml#/Constant']  # this will be overridden
+
+  $xref: 'object.yaml#/Object'
+
+  # Override key with another xref
+  b:
+    $xref: 'object2.yaml#/Object2'
+
+  # Override key with an array of xrefs
+  c:
+    - $xref: 'object2.yaml#/Object2'
+    - $xref: 'object2.yaml#/Object2'
+
+  # Add new key with xref
+  d:
+    $xref: 'object2.yaml#/Object2'
+
+  # Add new key with array of xrefs
+  e:
+    - $xref: 'object2.yaml#/Object2'
+    - $xref: 'object2.yaml#/Object2'

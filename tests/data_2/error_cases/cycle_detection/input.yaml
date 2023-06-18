@@ -1,0 +1,3 @@
+TopObject:
+  foo: 123
+  $xref: 'stuff_1.yaml#/Object'

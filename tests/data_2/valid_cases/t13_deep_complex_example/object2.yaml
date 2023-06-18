@@ -1,0 +1,5 @@
+Object2:
+  x: -1
+  y: -2
+  z:
+    $xref: 'list.yaml#/List'
