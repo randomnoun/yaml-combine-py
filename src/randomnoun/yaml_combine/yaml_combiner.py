@@ -165,7 +165,7 @@ class YamlCombiner:
                         new_obj = result
                     elif isinstance(result, dict):
                         # result merges into the object.
-                        new_obj |= result
+                        new_obj.update(result)
                     else:
                         raise ValueError(f"Inconsistent $xref types within object:\n\n {obj}")
 
