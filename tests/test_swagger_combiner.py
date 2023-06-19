@@ -12,8 +12,8 @@ from randomnoun.yaml_combine.yaml_combiner import YamlCombiner
 
 import os
 
-DATA_DIR_VALID_CASES = "test/data/valid_cases"
-DATA_DIR_ERROR_CASES = "test/data/error_cases"
+DATA_DIR_VALID_CASES = "tests/data/valid_cases"
+DATA_DIR_ERROR_CASES = "tests/data/error_cases"
 
 
 def nicer_assert_equal(result, expected_output):
@@ -93,5 +93,3 @@ def test_yaml_combiner_error_cases(test_case_dir, message_substring):
             sc.combine(output)
 
     assert message_substring in e_info.value.args[0]
-
-
