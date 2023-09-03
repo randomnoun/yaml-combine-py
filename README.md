@@ -1,4 +1,4 @@
-[![PyPI Version](https://img.shields.io/pypi/v/yaml-combine.svg)](https://pypi.org/project/yaml-combine/)
+[![PyPI version](https://img.shields.io/pypi/v/yaml-combine.svg)](https://pypi.org/project/yaml-combine/)
 
 # yaml-combine-py
 
