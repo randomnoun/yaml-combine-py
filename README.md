@@ -1,3 +1,5 @@
+[![PyPI Version](https://img.shields.io/pypi/v/yaml-combine.svg)](https://pypi.org/project/yaml-combine/)
+
 # yaml-combine-py
 
 A YAML pre-processor to combine one or more YAML files with `$xref` references.
